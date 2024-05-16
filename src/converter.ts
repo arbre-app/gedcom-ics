@@ -5,6 +5,7 @@ import {
   ValueNameParts,
 } from 'read-gedcom';
 import {createEvents, EventAttributes, HeaderAttributes} from 'ics';
+import {ValuePartDateDay} from 'read-gedcom/dist/cjs/parse/value/dates';
 
 export const getBirthdayIfAlive = (
   individual: SelectionIndividualRecord
@@ -17,8 +18,12 @@ export const getBirthdayIfAlive = (
     return null;
   }
   const name = getIndividualName(individual);
-  const label = `Birthday of ${name}`;
-  return convertGedcomEventToIcs(individual.getEventBirth(), {title: label});
+  const title = `Birthday of ${name}`;
+  const description = (date: ValuePartDateDay) => `Born in ${date.year.value}`;
+  return convertGedcomEventToIcs(individual.getEventBirth(), {
+    title,
+    description,
+  });
 };
 
 export const getIndividualName = (
@@ -35,7 +40,10 @@ export const getIndividualName = (
 
 export const convertGedcomEventToIcs = (
   event: SelectionEvent,
-  {title}: {title: string}
+  {
+    title,
+    description,
+  }: {title: string; description?: (date: ValuePartDateDay) => string}
 ): EventAttributes | null => {
   const value: ValueDate | undefined = event
     .getDate()
@@ -56,6 +64,7 @@ export const convertGedcomEventToIcs = (
   }
   return {
     title,
+    description: description ? description(date) : undefined,
     start: [date.year.value, date.month, date.day],
     duration: {days: 1},
     recurrenceRule: 'FREQ=YEARLY;INTERVAL=1',

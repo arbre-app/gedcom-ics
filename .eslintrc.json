@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/gts/",
   "rules": {
-    "no-process-exit": "off"
+    "no-process-exit": "off",
+    "eqeqeq": ["error", "always", {"null": "ignore"}]
   }
 }
