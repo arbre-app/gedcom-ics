@@ -1,8 +1,12 @@
 {
+  "dependencies": {
+    "ics": "^3.7.2",
+    "read-gedcom": "^0.3.2",
+    "ts-command-line-args": "^2.5.1"
+  },
   "devDependencies": {
     "@types/node": "20.11.5",
     "gts": "^5.3.0",
-    "read-gedcom": "^0.3.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.4.3"
   },
